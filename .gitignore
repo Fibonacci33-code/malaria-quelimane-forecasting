@@ -1,0 +1,22 @@
+﻿# Ambiente virtual Python
+.venv/
+
+# Ficheiros temporarios Python
+__pycache__/
+*.pyc
+
+# Dados epidemiologicos, climaticos e historicos
+data/
+
+# Copias de seguranca do prototipo
+prototipo_malaria_quelimane_backup*.py
+prototipo_malaria_quelimane_validado_*.py
+
+# Configuracoes locais e credenciais
+.env
+.env.*
+.streamlit/secrets.toml
+
+# Ficheiros temporarios
+*.tmp
+~$*
