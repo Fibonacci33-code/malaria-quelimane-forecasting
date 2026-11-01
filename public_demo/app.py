@@ -35,9 +35,11 @@ st.warning(
 
 
 st.info(
-    "Experimental research prototype. "
-    "Predictions represent reported malaria-positive "
-    "test results, not population-based incidence rates. "
+    "PUBLIC DEMONSTRATION - SYNTHETIC DATA ONLY. "
+    "All epidemiological data and model outputs presented here "
+    "are artificially generated for demonstration purposes. "
+    "Predictions do not represent actual malaria cases or "
+    "population-based incidence rates. "
     "This system is not prospectively validated."
 )
 
@@ -1285,9 +1287,11 @@ st.header("6. Research Limitations")
 
 st.write(
     """
-    - The original research dataset contains 84 monthly observations
-      from January 2019 to December 2025. Uploaded additional months
-      are experimental and do not change historical validation results.
+    - This public demonstration uses 84 artificially generated monthly
+      observations from January 2019 to December 2025. No original
+      epidemiological research observations are included. Uploaded
+      additional months are experimental and must not be interpreted
+      as verified surveillance records.
 
     - The outcome represents reported positive
       malaria test results, not population-based
@@ -1382,7 +1386,7 @@ def construir_relatorio_cientifico(dados, historico, avaliacoes, caminho_metrica
         ("1. Study scope and provenance", [
             "Location: Quelimane City, Mozambique.",
             f"Reporting period: {periodo} ({len(dados)} monthly observations).",
-            f"Active dataset: {origem_descricao}.",
+            f"Active dataset: {origem_descricao}",
             "Outcome: reported positive malaria test results (HTZ + TDR); "
             "not unique patients or population-based incidence.",
         ]),
@@ -1480,7 +1484,7 @@ def construir_relatorio_cientifico(dados, historico, avaliacoes, caminho_metrica
     sec.header.paragraphs[0].text = "Quelimane | Malaria and Climate Research Prototype"
     doc.add_heading("Scientific Monitoring and Forecast Report", 0)
     doc.add_paragraph(f"Generated (UTC): {gerado_em}")
-    doc.add_paragraph("RESEARCH USE ONLY — DATA PROVENANCE NOT INDEPENDENTLY VERIFIED")
+    doc.add_paragraph("PUBLIC DEMONSTRATION - SYNTHETIC DATA ONLY")
     for i, (titulo, paragrafos) in enumerate(secoes):
         doc.add_heading(titulo, level=1)
         for paragrafo in paragrafos:
@@ -1542,7 +1546,7 @@ def construir_relatorio_cientifico(dados, historico, avaliacoes, caminho_metrica
              Paragraph(f"Quelimane City, Mozambique | Generated UTC: {escape(gerado_em)}",
                        styles["Normal"]),
              Spacer(1, 10),
-             Paragraph("RESEARCH USE ONLY - DATA PROVENANCE NOT INDEPENDENTLY VERIFIED",
+             Paragraph("PUBLIC DEMONSTRATION - SYNTHETIC DATA ONLY",
                        styles["Heading3"])]
 
     def pdf_tabela(dados_tabela):
