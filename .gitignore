@@ -6,7 +6,12 @@ __pycache__/
 *.pyc
 
 # Dados epidemiologicos, climaticos e historicos
-data/
+/data/
+
+# Permitir dados exclusivamente sinteticos da demonstracao
+!/public_demo/data/
+!/public_demo/data/malaria/
+
 
 # Copias de seguranca do prototipo
 prototipo_malaria_quelimane_backup*.py
