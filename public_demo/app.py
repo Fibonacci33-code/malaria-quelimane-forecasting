@@ -20,27 +20,216 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("Malaria Forecasting and Climate Monitoring")
-st.subheader("Quelimane City, Mozambique")
 
-st.warning(
-    "PUBLIC DEMONSTRATION - SYNTHETIC DATA ONLY. "
-    "All epidemiological and climate values displayed in this "
-    "demonstration are artificially generated. "
-    "They do not represent observed malaria data from Quelimane. "
-    "Forecasts and model outputs in this demonstration must not "
-    "be interpreted as scientific findings or used for "
-    "public health decisions."
+# ============================================================
+# MALARIA DASHBOARD - CUSTOM THEME
+# ============================================================
+
+st.markdown(
+    '''
+    <style>
+    :root {
+        --malaria-green: #006B3C;
+        --malaria-dark-green: #004D2B;
+        --malaria-burgundy: #800020;
+        --malaria-gold: #F4B942;
+        --malaria-background: #F5F8F6;
+    }
+
+    .stApp {
+        background-color: var(--malaria-background);
+    }
+
+    /* MALARIA DASHBOARD - SCIENTIFIC SIDEBAR */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(
+            180deg,
+            #063B2A 0%,
+            #075238 55%,
+            #063B2A 100%
+        );
+        border-right: 3px solid #F4C542;
+    }
+
+    /* Sidebar headings */
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3 {
+        color: #F4C542 !important;
+    }
+
+    /* Sidebar descriptions and labels */
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] label,
+    [data-testid="stSidebar"] .stCaption {
+        color: #F0F5F1 !important;
+    }
+
+    /* Inputs retain a light background and dark text */
+    [data-testid="stSidebar"] input,
+    [data-testid="stSidebar"] textarea {
+        background-color: #FFFFFF !important;
+        color: #17382B !important;
+    }
+
+    /* Sidebar upload button contrast */
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] button {
+        background-color: #FFFFFF !important;
+        color: #063B2A !important;
+        border: 1px solid #C7D8CF !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] button:hover {
+        background-color: #E8F4EC !important;
+        color: #004D2B !important;
+        border-color: #F4C542 !important;
+    }
+
+    /* Force readable text inside the Upload button */
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] button,
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] button *,
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] button p,
+    [data-testid="stSidebar"] [data-testid="stFileUploader"] button span {
+        color: #063B2A !important;
+        -webkit-text-fill-color: #063B2A !important;
+    }
+
+    /* Sidebar metric values: readable dark green */
+    [data-testid="stSidebar"] [data-testid="stMetricValue"],
+    [data-testid="stSidebar"] [data-testid="stMetricValue"] *,
+    [data-testid="stSidebar"] [data-testid="stMetricValue"] div {
+        color: #004D2B !important;
+        -webkit-text-fill-color: #004D2B !important;
+    }
+
+    /* Sidebar action buttons: readable text */
+    [data-testid="stSidebar"] .stButton > button,
+    [data-testid="stSidebar"] .stButton > button *,
+    [data-testid="stSidebar"] .stFormSubmitButton > button,
+    [data-testid="stSidebar"] .stFormSubmitButton > button * {
+        color: #063B2A !important;
+        -webkit-text-fill-color: #063B2A !important;
+    }
+
+    /* Sidebar download buttons: readable text */
+    [data-testid="stSidebar"] [data-testid="stDownloadButton"] button {
+        background-color: #FFFFFF !important;
+        color: #063B2A !important;
+        border: 1px solid #C7D8CF !important;
+        border-radius: 10px !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stDownloadButton"] button *,
+    [data-testid="stSidebar"] [data-testid="stDownloadButton"] button p,
+    [data-testid="stSidebar"] [data-testid="stDownloadButton"] button span {
+        color: #063B2A !important;
+        -webkit-text-fill-color: #063B2A !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stDownloadButton"] button:hover {
+        background-color: #E8F4EC !important;
+        border-color: #F4C542 !important;
+    }
+
+    /* Sidebar metric cards */
+    [data-testid="stSidebar"] [data-testid="stMetric"] {
+        background: #F5FAF6;
+        border-left: 5px solid #F4C542;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stMetricLabel"] p {
+        color: #17382B !important;
+    }
+
+    [data-testid="stSidebar"] [data-testid="stMetricValue"] {
+        color: #004D2B !important;
+    }
+
+    h1 {
+        color: var(--malaria-dark-green) !important;
+        font-weight: 800 !important;
+    }
+
+    h2, h3 {
+        color: var(--malaria-burgundy) !important;
+        font-weight: 700 !important;
+    }
+
+    [data-testid="stMetric"] {
+        background: #FFFFFF;
+        border: 1px solid #E0EAE4;
+        border-left: 5px solid var(--malaria-green);
+        border-radius: 14px;
+        padding: 16px;
+        box-shadow: 0 3px 12px rgba(0, 60, 30, 0.07);
+    }
+
+    [data-testid="stMetricValue"] {
+        color: var(--malaria-dark-green);
+        font-weight: 800;
+    }
+
+    .stButton > button[kind="primary"] {
+        background-color: var(--malaria-green);
+        border-color: var(--malaria-green);
+        color: white;
+        border-radius: 10px;
+        font-weight: 700;
+    }
+
+    .stButton > button[kind="primary"]:hover {
+        background-color: var(--malaria-dark-green);
+        border-color: var(--malaria-dark-green);
+    }
+
+    [data-testid="stExpander"] {
+        background: #FFFFFF;
+        border: 1px solid #E0EAE4;
+        border-radius: 12px;
+    }
+
+    [data-testid="stAlert"] {
+        border-radius: 12px;
+    }
+
+    [data-testid="stDataFrame"] {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    </style>
+    ''',
+    unsafe_allow_html=True,
 )
 
 
-st.info(
-    "PUBLIC DEMONSTRATION - SYNTHETIC DATA ONLY. "
-    "All epidemiological data and model outputs presented here "
-    "are artificially generated for demonstration purposes. "
-    "Predictions do not represent actual malaria cases or "
-    "population-based incidence rates. "
-    "This system is not prospectively validated."
+# ============================================================
+# MALARIA SCIENTIFIC BANNER
+# ============================================================
+
+banner_path = Path(__file__).resolve().parent / "assets" / "malaria_banner.png"
+
+st.image(str(banner_path), use_container_width=True)
+
+# Descricao complementar abaixo do banner cientifico
+st.caption(
+    "Experimental malaria forecasting and climate monitoring | "
+    "Quelimane City, Mozambique | Random Forest"
+)
+
+# ============================================================
+# SCIENTIFIC DISCLAIMER - SYNTHETIC DATA
+# ============================================================
+
+st.warning(
+    "**PUBLIC DEMONSTRATION | SYNTHETIC DATA ONLY**\n\n"
+    "All epidemiological and climate values are artificially "
+    "generated and do not represent observed data from "
+    "Quelimane, Mozambique. Forecasts and model outputs "
+    "do not represent actual malaria cases or population-based "
+    "incidence rates. The system has not been prospectively "
+    "validated. Results must not be interpreted as scientific "
+    "findings or used for public health decisions.",
+    icon=":material/warning:"
 )
 
 
@@ -369,8 +558,8 @@ dados_originais = carregar_dados(entrada)
 st.sidebar.header("Data Management")
 
 ficheiro_actualizado = st.sidebar.file_uploader(
-    "Upload Updated Excel Dataset",
-    type=["xlsx"],
+    "Upload Updated Dataset (Excel or CSV)",
+    type=["xlsx", "csv"],
     help=(
         "Upload an updated dataset containing the "
         "original historical observations and any "
@@ -383,9 +572,15 @@ df = dados_originais.copy()
 if ficheiro_actualizado is not None:
 
     try:
-        dados_importados = pd.read_excel(
-            ficheiro_actualizado
-        )
+        if ficheiro_actualizado.name.lower().endswith(".csv"):
+            dados_importados = pd.read_csv(
+                ficheiro_actualizado,
+                encoding="utf-8-sig",
+            )
+        else:
+            dados_importados = pd.read_excel(
+                ficheiro_actualizado
+            )
 
         df = validar_actualizacao(
             dados_importados,
@@ -481,6 +676,261 @@ if ficheiro_actualizado is not None:
 
         st.stop()
 
+
+
+# ============================================================
+# PROTECCAO DOS REGISTOS MANUAIS POR BASE DE ORIGEM
+# ============================================================
+
+assinatura_base_activa = calcular_fingerprint_dataset(
+    df.sort_values(["Year", "Month"]).reset_index(drop=True)
+)
+
+if "manual_base_fingerprint" not in st.session_state:
+    st.session_state["manual_base_fingerprint"] = assinatura_base_activa
+    st.session_state["manual_monthly_data"] = []
+
+elif st.session_state["manual_base_fingerprint"] != assinatura_base_activa:
+    st.session_state["manual_monthly_data"] = []
+    st.session_state["manual_base_fingerprint"] = assinatura_base_activa
+
+    st.sidebar.warning(
+        "The active dataset has changed. Previous manual entries "
+        "were cleared from this session to prevent mixing datasets. "
+        "Export manual updates before switching datasets."
+    )
+
+# ============================================================
+# INTRODUCAO MANUAL DE DADOS MENSAIS
+# ============================================================
+
+st.sidebar.subheader("Manual Monthly Data Entry")
+st.sidebar.caption(
+    "Experimental demonstration using synthetic data only."
+)
+
+# Determinar automaticamente o proximo mes da serie sintetica.
+if "manual_monthly_data" not in st.session_state:
+    st.session_state["manual_monthly_data"] = []
+
+# Calcular o proximo mes a partir da base activa
+# e dos registos manuais associados a essa base.
+historico_periodos = df.copy()
+
+if st.session_state["manual_monthly_data"]:
+    historico_periodos = pd.concat(
+        [
+            historico_periodos,
+            pd.DataFrame(st.session_state["manual_monthly_data"]),
+        ],
+        ignore_index=True,
+    )
+
+ultimo_periodo = pd.to_datetime(
+    dict(
+        year=historico_periodos["Year"].astype(int),
+        month=historico_periodos["Month"].astype(int),
+        day=1,
+    )
+).max()
+
+proximo_periodo = ultimo_periodo + pd.DateOffset(months=1)
+
+st.sidebar.caption(
+    f"Last recorded month: {ultimo_periodo:%Y-%m}"
+)
+st.sidebar.info(
+    f"Next expected month: {proximo_periodo:%Y-%m}"
+)
+
+with st.sidebar.form("manual_monthly_entry"):
+    manual_year = st.number_input(
+        "Year",
+        min_value=int(proximo_periodo.year),
+        max_value=int(proximo_periodo.year),
+        value=int(proximo_periodo.year),
+        step=1,
+    )
+    manual_month = st.selectbox(
+        "Month",
+        options=[int(proximo_periodo.month)],
+        format_func=lambda m: [
+            "January", "February", "March", "April",
+            "May", "June", "July", "August",
+            "September", "October", "November", "December",
+        ][m - 1],
+    )
+
+    manual_htz = st.number_input(
+        "HTZ positive", min_value=0, value=0, step=1,
+    )
+    manual_tdr = st.number_input(
+        "TDR positive", min_value=0, value=0, step=1,
+    )
+    manual_tests = st.number_input(
+        "Rapid tests used", min_value=0, value=0, step=1,
+    )
+
+    # Total calculado automaticamente a partir dos dois testes.
+    manual_confirmed = int(manual_htz + manual_tdr)
+
+    st.metric(
+        "Confirmed positive results (HTZ + TDR)",
+        f"{manual_confirmed:,}",
+    )
+    st.caption(
+        "Automatically calculated from HTZ and TDR positive results. "
+        "Values refresh when the form is submitted."
+    )
+
+    manual_precip = st.number_input(
+        "Precipitation (mm)", min_value=0.0,
+        value=0.0, step=1.0,
+    )
+    manual_tmin = st.number_input(
+        "Minimum temperature (\u00b0C)", value=24.0, step=0.1,
+    )
+    manual_tmean = st.number_input(
+        "Mean temperature (\u00b0C)", value=27.0, step=0.1,
+    )
+    manual_tmax = st.number_input(
+        "Maximum temperature (\u00b0C)", value=32.0, step=0.1,
+    )
+    manual_rh = st.number_input(
+        "Relative humidity (%)",
+        min_value=0.0, max_value=100.0,
+        value=75.0, step=1.0,
+    )
+
+    manual_submit = st.form_submit_button(
+        "Validate Monthly Data"
+    )
+
+# Manter os dados manuais apenas durante a sessao.
+if "manual_monthly_data" not in st.session_state:
+    st.session_state["manual_monthly_data"] = []
+
+if manual_submit:
+    try:
+        # Utilizar sempre a base activa validada.
+        historico_manual = df.copy()
+
+        if st.session_state["manual_monthly_data"]:
+            historico_manual = pd.concat(
+                [
+                    historico_manual,
+                    pd.DataFrame(st.session_state["manual_monthly_data"]),
+                ],
+                ignore_index=True,
+            )
+
+        ultima_data = pd.to_datetime(
+            dict(
+                year=historico_manual["Year"].astype(int),
+                month=historico_manual["Month"].astype(int),
+                day=1,
+            )
+        ).max()
+
+        nova_data = pd.Timestamp(
+            year=int(manual_year),
+            month=int(manual_month),
+            day=1,
+        )
+
+        if nova_data != ultima_data + pd.DateOffset(months=1):
+            raise ValueError(
+                "Enter the next consecutive month: "
+                f"{(ultima_data + pd.DateOffset(months=1)):%Y-%m}."
+            )
+
+        if manual_tdr > manual_tests:
+            raise ValueError(
+                "TDR positive cannot exceed rapid tests used."
+            )
+
+        if not (manual_tmin <= manual_tmean <= manual_tmax):
+            raise ValueError(
+                "Minimum temperature must not exceed mean temperature, "
+                "and mean temperature must not exceed maximum temperature."
+            )
+
+        novo_registo = {
+            "Year": int(manual_year),
+            "Month": int(manual_month),
+            "Year-month": nova_data.strftime("%Y-%m"),
+            "HTZ positive": int(manual_htz),
+            "TDR positive": int(manual_tdr),
+            "Confirmed (HTZ + TDR)": int(manual_htz + manual_tdr),
+            "Rapid tests used": int(manual_tests),
+            "Precipitation (mm)": float(manual_precip),
+            "Mean temperature (°C)": float(manual_tmean),
+            "Minimum temperature (°C)": float(manual_tmin),
+            "Maximum temperature (°C)": float(manual_tmax),
+            "Relative humidity (%)": float(manual_rh),
+        }
+
+        candidato = pd.concat(
+            [historico_manual, pd.DataFrame([novo_registo])],
+            ignore_index=True,
+        )
+
+        validar_actualizacao(candidato, dados_originais)
+
+        st.session_state["manual_monthly_data"].append(novo_registo)
+
+        st.sidebar.success(
+            f"Monthly data validated: {nova_data:%Y-%m}. "
+            "Forecast updated."
+        )
+
+    except Exception as erro_manual:
+        st.sidebar.error(f"Manual entry rejected: {erro_manual}")
+
+# Aplicar os meses manuais a base activa utilizada pelo modelo.
+if st.session_state["manual_monthly_data"]:
+    candidato = pd.concat(
+        [
+            df,
+            pd.DataFrame(st.session_state["manual_monthly_data"]),
+        ],
+        ignore_index=True,
+    )
+    df = validar_actualizacao(candidato, dados_originais)
+
+
+# ============================================================
+# EXPORTACAO DOS DADOS MENSAIS ACTUALIZADOS
+# ============================================================
+
+if True:
+
+    st.sidebar.subheader("Export Updated Dataset")
+
+    st.sidebar.caption(
+        "Download the active synthetic dataset together with "
+        "validated monthly records added during this session."
+    )
+
+    dados_exportacao = df[dados_originais.columns].copy()
+
+    csv_exportacao = dados_exportacao.to_csv(
+        index=False
+    ).encode("utf-8-sig")
+
+    st.sidebar.download_button(
+        label="Download Updated Dataset (CSV)",
+        data=csv_exportacao,
+        file_name="Quelimane_updated_synthetic_dataset.csv",
+        mime="text/csv",
+        key="download_updated_dataset",
+    )
+
+    st.sidebar.caption(
+        "Synthetic demonstration data only. "
+        "Downloading does not modify the original Excel file."
+    )
+
 # Historico visivel sem necessidade de carregar um ficheiro.
 st.sidebar.subheader("Dataset Update History")
 try:
@@ -567,24 +1017,29 @@ st.header("1. Malaria Surveillance")
 col1, col2, col3 = st.columns(3)
 
 col1.metric(
-    "Months available",
-    len(df)
+    "📅 Months of Data",
+    len(df),
+    help="Number of monthly observations in the active dataset."
 )
 
 col2.metric(
-    "Total positive results",
-    f"{int(y.sum()):,}"
+    "🧪 Total Positive Results",
+    f"{int(y.sum()):,}",
+    help="Sum of malaria-positive results in the active dataset."
 )
 
 col3.metric(
-    "Latest monthly positive results",
-    f"{int(y.iloc[-1]):,}"
+    "📈 Latest Monthly Results",
+    f"{int(y.iloc[-1]):,}",
+    help="Malaria-positive results recorded for the latest available month."
 )
 
 st.subheader("Historical Malaria-Positive Results")
 
 st.line_chart(
-    y.rename("Reported malaria-positive results")
+    y.rename("Reported malaria-positive results"),
+    color="#800020",
+    use_container_width=True,
 )
 
 
@@ -594,13 +1049,51 @@ st.line_chart(
 
 st.header("2. Climate Monitoring")
 
+# ============================================================
+# CLIMATE DASHBOARD - LATEST MONTH INDICATORS
+# ============================================================
+
+st.caption(
+    "Latest available monthly climate observations "
+    "from the active demonstration dataset."
+)
+
+clima_col1, clima_col2, clima_col3 = st.columns(3)
+
+clima_col1.metric(
+    "Monthly Precipitation",
+    f"{df['Precipitation (mm)'].iloc[-1]:,.1f} mm",
+    help="Total precipitation in the latest available month."
+)
+
+clima_col2.metric(
+    "Mean Temperature",
+    f"{df['Mean temperature (\u00b0C)'].iloc[-1]:,.1f} \u00b0C",
+    help="Mean temperature in the latest available month."
+)
+
+clima_col3.metric(
+    "Relative Humidity",
+    f"{df['Relative humidity (%)'].iloc[-1]:,.1f}%",
+    help="Relative humidity in the latest available month."
+)
+
 variavel = st.selectbox(
     "Select climate variable",
     clima_cols
 )
 
+# Cores especificas para cada variavel climatica
+cores_climaticas = {
+    "Precipitation (mm)": "#2878B5",
+    "Mean temperature (°C)": "#D99A16",
+    "Relative humidity (%)": "#006B3C",
+}
+
 st.line_chart(
-    df[variavel]
+    df[variavel],
+    color=cores_climaticas.get(variavel, "#006B3C"),
+    use_container_width=True,
 )
 
 
@@ -715,6 +1208,63 @@ previsao = float(
 previsao = max(0.0, previsao)
 
 
+
+# ============================================================
+# PREDITORES UTILIZADOS NA PREVISAO
+# ============================================================
+
+st.subheader("Climate and Malaria Predictors Used in Forecast")
+
+st.caption(
+    "The table displays historical observations used to generate "
+    "the next-month forecast. Climate values are observed historical "
+    "inputs, not forecasts of future weather."
+)
+
+registos_preditores = []
+
+for lag in [1, 2, 3, 12]:
+    data_origem = proximo_mes - pd.DateOffset(months=lag)
+    registos_preditores.append({
+        "Predictor": "Malaria positive results",
+        "Lag (months)": lag,
+        "Reference month": data_origem.strftime("%Y-%m"),
+        "Value": float(y.loc[data_origem]),
+        "Unit": "Positive results",
+    })
+
+for coluna in clima_cols:
+    for lag in [1, 2, 3]:
+        data_origem = proximo_mes - pd.DateOffset(months=lag)
+
+        unidade = (
+            "mm" if "Precipitation" in coluna
+            else "%" if "humidity" in coluna.lower()
+            else "deg C"
+        )
+
+        registos_preditores.append({
+            "Predictor": coluna,
+            "Lag (months)": lag,
+            "Reference month": data_origem.strftime("%Y-%m"),
+            "Value": float(df.loc[data_origem, coluna]),
+            "Unit": unidade,
+        })
+
+tabela_preditores = pd.DataFrame(registos_preditores)
+
+with st.expander("View historical predictors used by Random Forest"):
+    st.dataframe(
+        tabela_preditores,
+        hide_index=True,
+        use_container_width=True,
+    )
+
+    st.caption(
+        "The model also includes sine and cosine transformations "
+        "of the forecast month to represent seasonality."
+    )
+
 # ============================================================
 # 8. APRESENTAR PREVISAO
 # ============================================================
@@ -724,18 +1274,24 @@ st.header("3. One-Month-Ahead Forecast")
 col1, col2, col3 = st.columns(3)
 
 col1.metric(
-    "Last observed month",
-    ultimo_mes.strftime("%B %Y")
+    "Last Observed Month",
+    ultimo_mes.strftime("%b %Y"),
+    help="Latest month available in the active dataset."
 )
 
 col2.metric(
-    "Forecast month",
-    proximo_mes.strftime("%B %Y")
+    "Forecast Month",
+    proximo_mes.strftime("%b %Y"),
+    help="Month immediately following the latest observation."
 )
 
 col3.metric(
-    "Predicted malaria-positive results",
-    f"{previsao:,.0f}"
+    "Predicted Positive Results",
+    f"{previsao:,.0f}",
+    help=(
+        "Experimental Random Forest prediction based on "
+        "synthetic data. Not a validated public health forecast."
+    )
 )
 
 st.caption(
@@ -750,6 +1306,49 @@ st.warning(
     "validated and must not be treated as an operational alert."
 )
 
+
+# ============================================================
+# IMPORTANCIA DAS VARIAVEIS NO RANDOM FOREST
+# ============================================================
+
+st.subheader("Random Forest Feature Importance")
+
+st.caption(
+    "Feature importance represents the relative reduction "
+    "in impurity attributed to each predictor during Random "
+    "Forest training. It does not establish causality or "
+    "measure out-of-sample predictive accuracy."
+)
+
+importancias = pd.DataFrame({
+    "Predictor": X.columns,
+    "Importance": modelo.feature_importances_,
+})
+
+importancias = importancias.sort_values(
+    "Importance", ascending=False
+).reset_index(drop=True)
+
+with st.expander("View predictor importance"):
+    st.bar_chart(
+        importancias.set_index("Predictor")["Importance"],
+        horizontal=True,
+        color="#006B3C",
+    )
+
+    st.dataframe(
+        importancias,
+        hide_index=True,
+        use_container_width=True,
+    )
+
+    st.caption(
+        "These are model-level impurity-based importance scores, "
+        "not causal effects or contributions specific to this "
+        "individual forecast. Correlated predictors may share "
+        "importance, and these scores can be biased."
+    )
+
 # ------------------------------------------------------------
 # REGISTO MANUAL E CONTROLADO DA PREVISAO
 # ------------------------------------------------------------
@@ -762,11 +1361,12 @@ st.caption(
     "for later comparison with observed data."
 )
 
-origem_dados = (
-    "uploaded_excel_unverified"
-    if ficheiro_actualizado is not None
-    else "original_dataset_unverified"
-)
+if ficheiro_actualizado is not None:
+    origem_dados = "uploaded_excel_unverified"
+elif st.session_state.get("manual_monthly_data"):
+    origem_dados = "manual_entry_unverified"
+else:
+    origem_dados = "original_dataset_unverified"
 
 fingerprint_dataset = calcular_fingerprint_dataset(df)
 historico_previsoes = carregar_historico()
@@ -932,13 +1532,44 @@ try:
                     )
                 )
                 st.caption(f"Timing classification: {tipo_avaliacao}")
+                # Demonstracao controlada com dados sinteticos.
+                # Nunca atribuir verificacao oficial a esta modalidade.
                 if not verificado:
                     st.warning(
-                        "PREVIEW ONLY — observed data are unverified or not "
-                        "linked to an independently verified source. "
-                        "These numbers are not scientific validation results. "
-                        "Registration is disabled."
+                        "SYNTHETIC EXPERIMENTAL EVALUATION ONLY. "
+                        "Results are not official observations or "
+                        "prospectively validated forecasts."
                     )
+                    confirmar_sintetico = st.checkbox(
+                        "I confirm that the active dataset contains "
+                        "synthetic demonstration data only.",
+                        key="confirm_synthetic_evaluation",
+                    )
+                    if confirmar_sintetico and st.button(
+                        "Save Experimental Forecast Evaluation",
+                        key="save_experimental_forecast_evaluation",
+                    ):
+                        novo_registo = {
+                            "evaluation_id": str(uuid.uuid4()),
+                            "forecast_id": id_previsao,
+                            "forecast_month": mes_alvo,
+                            "generated_at_utc": str(seleccionada["generated_at_utc"]),
+                            "evaluated_at_utc": datetime.now(timezone.utc).isoformat(),
+                            "predicted_positive_results": f"{previsto:.6f}",
+                            "observed_positive_results": f"{observado:.0f}",
+                            "absolute_error": f"{erro_absoluto:.6f}",
+                            "percentage_error": (
+                                f"{erro_percentual:.6f}"
+                                if erro_percentual is not None else ""
+                            ),
+                            "evaluation_type": "retrospective_experimental",
+                            "data_source": "synthetic_demonstration",
+                            "verification_status": "synthetic_experimental",
+                        }
+                        if guardar_avaliacao(novo_registo):
+                            st.success("Synthetic experimental evaluation saved.")
+                        else:
+                            st.info("Evaluation already exists; no duplicate saved.")
                 else:
                     st.info(
                         "Source registry indicates verified status. Confirm the "
@@ -1002,6 +1633,74 @@ else:
     st.warning(
         "Model comparison results are not available."
     )
+
+
+
+# ============================================================
+# DESEMPENHO PROGRESSIVO DAS AVALIACOES EXPERIMENTAIS
+# ============================================================
+
+st.subheader("Progressive Experimental Forecast Performance")
+
+st.caption(
+    "Progressive evaluation based exclusively on saved synthetic "
+    "experimental forecast evaluations. These indicators are "
+    "independent of the historical validation for 2024-2025."
+)
+
+avaliacoes_progressivas = carregar_avaliacoes()
+
+avaliacoes_progressivas = avaliacoes_progressivas.loc[
+    (
+        avaliacoes_progressivas["verification_status"]
+        == "synthetic_experimental"
+    )
+    & (
+        avaliacoes_progressivas["evaluation_type"]
+        == "retrospective_experimental"
+    )
+].copy()
+
+if avaliacoes_progressivas.empty:
+    st.info(
+        "No synthetic experimental evaluations available "
+        "for progressive performance monitoring."
+    )
+else:
+    erros = pd.to_numeric(
+        avaliacoes_progressivas["absolute_error"],
+        errors="raise",
+    )
+
+    if erros.isna().any() or not np.isfinite(erros).all():
+        st.error("Invalid error values in the evaluation registry.")
+    else:
+        numero_avaliacoes = len(erros)
+        mae_progressivo = float(np.mean(erros))
+        rmse_progressivo = float(np.sqrt(np.mean(np.square(erros))))
+
+        col_mae, col_rmse, col_n = st.columns(3)
+
+        col_mae.metric(
+            "Progressive MAE",
+            f"{mae_progressivo:,.2f}",
+        )
+
+        col_rmse.metric(
+            "Progressive RMSE",
+            f"{rmse_progressivo:,.2f}",
+        )
+
+        col_n.metric(
+            "Evaluated Months",
+            numero_avaliacoes,
+        )
+
+        st.caption(
+            "RETROSPECTIVE EXPERIMENTAL EVALUATION ? SYNTHETIC DATA ONLY. "
+            "These metrics do not represent prospective validation "
+            "or operational forecasting performance."
+        )
 
 
 # ============================================================
@@ -1241,7 +1940,9 @@ if ficheiro_previsoes.exists():
             ]
 
             st.line_chart(
-                grafico
+                grafico,
+                color=["#006B3C", "#800020"],
+                use_container_width=True,
             )
 
             # ------------------------------------------------
@@ -1382,6 +2083,54 @@ def construir_relatorio_cientifico(dados, historico, avaliacoes, caminho_metrica
         for coluna, titulo in figuras_clima
     ]
 
+
+    # Avaliacoes retrospectivas experimentais, separadas da validacao historica.
+    avaliacoes_experimentais = avaliacoes.loc[
+        (avaliacoes["verification_status"] == "synthetic_experimental")
+        & (avaliacoes["evaluation_type"] == "retrospective_experimental")
+    ].copy()
+
+    resumo_desempenho_experimental = [
+        "Retrospective experimental performance - SYNTHETIC DATA ONLY.",
+    ]
+
+    if avaliacoes_experimentais.empty:
+        resumo_desempenho_experimental.append(
+            "No registered synthetic experimental evaluations are available."
+        )
+    else:
+        erros_experimentais = pd.to_numeric(
+            avaliacoes_experimentais["absolute_error"],
+            errors="raise",
+        )
+
+        if (
+            erros_experimentais.isna().any()
+            or not np.isfinite(erros_experimentais).all()
+        ):
+            raise ValueError("Invalid experimental evaluation errors.")
+
+        meses_experimentais = sorted(
+            avaliacoes_experimentais["forecast_month"].astype(str).unique()
+        )
+
+        mae_experimental = float(np.mean(erros_experimentais))
+        rmse_experimental = float(
+            np.sqrt(np.mean(np.square(erros_experimentais)))
+        )
+
+        resumo_desempenho_experimental.extend([
+            f"Registered experimental evaluations: {len(erros_experimentais)}.",
+            f"Evaluated months: {', '.join(meses_experimentais)}.",
+            f"Progressive experimental MAE: {mae_experimental:.2f}.",
+            f"Progressive experimental RMSE: {rmse_experimental:.2f}.",
+        ])
+
+    resumo_desempenho_experimental.append(
+        "These retrospective synthetic evaluations do not establish "
+        "prospective validation or operational forecasting performance."
+    )
+
     secoes = [
         ("1. Study scope and provenance", [
             "Location: Quelimane City, Mozambique.",
@@ -1413,7 +2162,7 @@ def construir_relatorio_cientifico(dados, historico, avaliacoes, caminho_metrica
             "Existing model comparison files, when present, describe historical "
             "rolling-origin evaluation (January 2024 to December 2025), "
             "not prospective operational performance.",
-        ]),
+        ] + resumo_desempenho_experimental),
         ("6. Scientific limitations and interpretation", [
             "This is an experimental research prototype and is not prospectively validated.",
             "Uploaded observations may be simulated or unverified. Internal "
