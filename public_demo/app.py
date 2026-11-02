@@ -24,7 +24,7 @@ st.title("Malaria Forecasting and Climate Monitoring")
 st.subheader("Quelimane City, Mozambique")
 
 st.warning(
-    "PUBLIC DEMONSTRATION ? SYNTHETIC DATA ONLY. "
+    "PUBLIC DEMONSTRATION - SYNTHETIC DATA ONLY. "
     "All epidemiological and climate values displayed in this "
     "demonstration are artificially generated. "
     "They do not represent observed malaria data from Quelimane. "
