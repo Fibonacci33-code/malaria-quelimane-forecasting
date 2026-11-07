@@ -2407,3 +2407,28 @@ if ficheiros_relatorio and ficheiros_relatorio["fingerprint"] == assinatura_rela
 st.success(
     "Experimental forecasting prototype ready."
 )
+
+# Institutional footer — public demonstration
+st.markdown(
+    """
+    <div style="
+        margin-top: 32px;
+        padding: 20px 12px;
+        text-align: center;
+        border-top: 1px solid #DFE8DF;
+        color: #64748B;
+        font-size: 13px;
+    ">
+        <div style="font-weight: 600; color: #164B35; font-size: 15px;">
+            Malaria Forecasting — Quelimane
+        </div>
+        <div style="margin-top: 6px;">
+            Experimental Research Prototype | Universidade Licungo, Mozambique
+        </div>
+        <div style="margin-top: 8px; font-size: 12px;">
+            Climate Variability · Epidemiological Modelling · Scientific Research
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
